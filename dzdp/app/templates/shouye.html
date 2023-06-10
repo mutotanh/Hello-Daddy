@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+
+padding:0;            /*清除内边距*/
+
+margin:0;              /*清除外边距*/
+
+}
+    body{
+    font-style:italic;
+    font-weight:bold;
+    font-size:50px;
+    line-height:1.5em;
+    font-family:"宋体",sans-serif;
+        color: yellow;
+}
+
+        ul{list-style: none;}
+
+        li,h1{
+            text-align:center;
+
+            align-content: center;
+            }
+                    body{
+         background: url({% static '../static/images/shouyetu.jpg' %}) repeat;
+    }
+        a {
+                color: red;
+
+        }
+
+    a:hover{
+        background-color: rgb(191, 245, 227);
+    }
+    .beijingbag {
+        position: absolute;
+        z-index:-1;
+        opacity: 0.7;
+        }
+    .beijing {
+        width: 100%;
+        height: 100%;
+    }
+
+    </style>
+</head>
+<body>
+<div class="beijingbag">
+    <img class="beijing" src={% static '../static/image/shouye.png' %} alt="背景">
+</div>
+<h1>九方智投数据展示及图片首页</h1>
+<ul>
+
+    <li><a href=/app/page_test/>九方智投股票数据展示</a> </li>
+
+    <li><a href=/app/bar/>九方智投股票柱状图图展示1</a> </li>
+    <li><a href=/app/Pie/>九方智投股票饼图展示2</a> </li>
+    <li><a href=/app/Radar/>九方智投股票雷达展示3</a> </li>
+    <li><a href=/app/scatter/>九方智投股票散点展示4</a> </li>
+    <li><a href=/app/echartstubiao/>九方智投股票echarts折线图展示5</a> </li>
+
+</ul>
+</body>
+</html>

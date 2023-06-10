@@ -1,0 +1,155 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页测试</title>
+</head>
+<style>
+    * {
+        padding:0;            /*清除内边距*/
+        margin:0;              /*清除外边距*/
+        }
+
+    body{
+         background: url({% static '../static/images/beijing.jpg' %}) repeat;
+    }
+    h1 {
+        text-align: center;
+
+        font-size: 40px;/*大小*/
+        font-style: inherit;/*样式*/
+        font-family: 仿宋 ;/*字族*/
+        color: red;/*颜色*/
+    }
+
+
+    a {
+        background-color: yellow;
+        margin: 0px 0px 0px 0px;
+
+    }
+
+    {#    #给单元格固定宽度#}
+    table{
+        table-layout: fixed;/*首行统一宽度，给 table 添加一个 table-layout: fixed; 属性：使列宽由表格宽度和列宽度设定*/
+        border-collapse:collapse;/*border-collapse 属性设置表格的边框是否被合并为一个单一的边框*/
+    }
+{##}
+{##}
+    td{
+        padding: 10px 10px 10px 10px;
+        margin: 10px 10px 10px 10px;
+        width: 150px;
+        height: 40px;
+        font-size:12px;
+        word-break:break-all;/*强制换行*/
+        border : 1px solid orangered;
+
+
+    }
+
+    h1 {
+        text-align: center;
+    }
+</style>
+<body style="background-color: aqua">
+
+<h1>灯网数据展示</h1>
+{#检索功能#}
+<form method="post" action="/app/page_test/">
+    {% csrf_token %}
+    <select name="category" title="">
+        <option value="id">id</option>
+        <option value="city">城市</option>
+
+        <option value="shopname">店铺名</option>
+        <option value="mainregionname">位置</option>
+        <option value="maincategoryname">所属分类</option>
+        <option value="tastescore">口味评分</option>
+
+        <option value="environmentscore">环境评分</option>
+        <option value="servicescore">服务评分</option>
+            <option value="avgprice">人均评分</option>
+        <option value="shopurl">链接</option>
+    </select>
+<input type="search" name="search" value="{{ search }}"title="" placeholder="格式：与查询数据格式相同" >
+<input type="submit" value="提交">
+</form>
+
+{#表头#}
+<table style="background-color: antiquewhite">
+
+    <tr>
+        <td class="hang">id</td>
+        <td class="hang">城市</td>
+        <td >店铺名</td>
+        <td >位置</td>
+        <td >所属分类</td>
+        <td >口味评分</td>
+
+        <td >环境评分</td>
+        <td >服务评分</td>
+        <td >人均评分</td>
+        <td >链接</td>
+
+    </tr>
+</table>
+
+{#数据展示#}
+{% for p in page %}
+    <table style="background-color: antiquewhite">
+        <tr>
+               <td>{{ p.id}}</td>
+            <td>{{ p.city}}</td>
+
+            <td >{{ p.shopname}}</td>
+            <td >{{ p.mainregionname}}</td>
+            <td>{{ p.maincategoryname}}</td>
+            <td>{{ p.tastescore}}</td>
+
+            <td>{{ p.environmentscore}}</td>
+            <td>{{ p.servicescore}}</td>
+            <td>{{ p.avgprice}}</td>
+            <td>{{ p.shopurl}}</td>
+
+        </tr>
+    </table>
+{% endfor %}
+
+
+{#后边是分页功能，只要传入page变量，paginator变量即可运行#}
+<!--判断是否有上一页，然后拼接关于page的查询字符串,即链接-->
+{#has_previous() ：page对象的一个属性，判断是否还有上一页#}
+{% if page.has_previous %}
+{# 得到上一页的页码编号#}
+{#    previous_page_number() ：page对象的一个属性，获取上一页的页码。，#}
+{#    进行get方法传参（即url传参，基本所有的网页，主页面（主页面就是你写的url页面）？之后的都是传的 参数，如果不传参数就转到不传参数的页面，如果传参转到需要传产的页面），#}
+{#    将在views的函数里进行接受参数#}
+  <a href="/app/page_test?page={{ page.previous_page_number }}" >上一页</a>
+{% else %}
+    上一页
+{% endif %}
+
+{# 在页面范围内循环选择一个页面号码#}
+{#paginator对象的page_range属性 ：将返回 页码对象（列表：[对象，对象，对象]） 的 页码的列表（数字列表）。比如 [1,2,3,4]#}
+{% for p in paginator.page_range %}
+{# 如果页面编号等于当前页码序号#}
+{#  page对象的一个属性：  number ：当前的页码#}
+    {% if p == page.number %}
+        {{ p }}
+    {% else %}
+{#          否则跳转到页码相对应的页面#}
+        <a href="/app/page_test?page={{ p }}">{{ p }}</a>
+    {% endif %}
+{% endfor %}
+
+{#has_next() ：是否还有下一页。#}
+{% if page.has_next %}
+{#    next_page_number() ：下一页的页码。#}
+  <a href="/app/page_test?page={{ page.next_page_number }}">下一页</a>
+{% else %}
+下一页
+{% endif %}
+
+</body>
+</html>
